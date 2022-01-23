@@ -1,0 +1,740 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# Assignment 3"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {
+    "deletable": false,
+    "editable": false,
+    "nbgrader": {
+     "checksum": "cd3ecc13604d15a89bbb1bebcb80e5c5",
+     "grade": false,
+     "grade_id": "libraries",
+     "locked": true,
+     "schema_version": 1,
+     "solution": false
+    }
+   },
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import pandas as pd\n",
+    "import matplotlib.pyplot as plt\n",
+    "pd.options.display.max_rows = 20\n",
+    "np.set_printoptions(precision=4, suppress=True)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Datetime manipulations\n",
+    "\n",
+    "The Data Wrangling course started on Monday 7 January 2019 at 9 am and will end on Friday 1 February at 5.15 pm. Calculate the duration of the course in minutes. Assign the value to the variable *duration*.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {
+    "deletable": false,
+    "nbgrader": {
+     "checksum": "aeb1c889f8320b7d9a070dacd5e16230",
+     "grade": false,
+     "grade_id": "duration",
+     "locked": false,
+     "schema_version": 1,
+     "solution": true
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from datetime import datetime\n",
+    "\n",
+    "# YOUR CODE HERE\n",
+    "\n",
+    "# The formulation of the excercie is contradictory: On one hand it says the course \"will end\" on 1st of Feb, which\n",
+    "# which suggests that the year of the ending date is 2020. On the other hand, 1st of Feb was on a Friday in 2019, \n",
+    "# which indicate that the year of the ending date is 2019.\n",
+    "\n",
+    "from dateutil.parser import parse\n",
+    "duration = (parse('Friday 1 February at 5:15 pm 2019') - parse('Monday 7 January 2019 at 9 am')).total_seconds()/60\n",
+    "# duration = (datetime(2019, 2, 1, 17, 15) - datetime(2019, 1, 7, 9)).total_seconds()/60\n",
+    "# YOUR CODE ENDS HERE"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "deletable": false,
+    "editable": false,
+    "nbgrader": {
+     "checksum": "9044ca0654023b062c7bfa59fc951c9e",
+     "grade": true,
+     "grade_id": "duration-correct",
+     "locked": true,
+     "points": 1,
+     "schema_version": 1,
+     "solution": false
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "36495.0\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(duration)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Below you will find the scheduled days of the course Data Wrangling. The values in the time series denote the number of contact hours spend on each lecture. Create a time series that calculates the cumulative sum of all the hours that you have spent on the course. Assign the cumulate sum on 29 January 2019 to the variable *cum_hours*."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {
+    "deletable": false,
+    "nbgrader": {
+     "checksum": "0e7cf41a6adc34e0f94ea69e035392a5",
+     "grade": false,
+     "grade_id": "cum-hours",
+     "locked": false,
+     "schema_version": 1,
+     "solution": true
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from datetime import datetime\n",
+    "from pandas.tseries.offsets import *\n",
+    "\n",
+    "\n",
+    "dates = [datetime(2019, 1, 7), datetime(2019, 1, 8), datetime(2019, 1, 10),\n",
+    "         datetime(2019, 1, 14), datetime(2019, 1, 15), datetime(2019, 1, 17),\n",
+    "         datetime(2019, 1, 21), datetime(2019, 1, 22), datetime(2019, 1, 24),\n",
+    "         datetime(2019, 1, 30), datetime(2019, 1, 31), datetime(2019, 2, 1)]\n",
+    "ts = pd.Series([2, 2, 1, 2, 2, 1, 2, 2, 1, 3, 3, 3], index = dates)\n",
+    "\n",
+    "# YOUR CODE HERE\n",
+    "from dateutil.parser import parse\n",
+    "cumulative_sum = np.cumsum(ts)\n",
+    "cum_hours = cumulative_sum[:parse('29 January 2019')][-1]\n",
+    "# YOUR CODE ENDS HERE"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "deletable": false,
+    "editable": false,
+    "nbgrader": {
+     "checksum": "0dba47d1bb8480c0ffcd2556583c30e5",
+     "grade": true,
+     "grade_id": "cum-hours-correct",
+     "locked": true,
+     "points": 1,
+     "schema_version": 1,
+     "solution": false
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "15\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(cum_hours)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Suppose that you want to become a world-class expert in data wrangling. So, you decide to spent 2 hours learning data wrangling every Tuesday in 2019. As you have a lot of free time every first Wednesday of the month, you spent 3 hours learning data wrangling those days in 2019. Calculate how many hours you will spend learning in 2019. Assign that value to the variable *study_hours*."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {
+    "deletable": false,
+    "nbgrader": {
+     "checksum": "6e6875e3349fbda5ae02e40071f53a86",
+     "grade": false,
+     "grade_id": "study-hours",
+     "locked": false,
+     "schema_version": 1,
+     "solution": true
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from datetime import datetime\n",
+    "\n",
+    "# YOUR CODE HERE\n",
+    "study_hours = 2 * len(pd.date_range('2019-01-01', '2019-12-31', freq = 'W-TUE')) + 3 * len(pd.date_range('2019-01-01', '2019-12-31', freq = 'WOM-1WED'))\n",
+    "# YOUR CODE ENDS HERE"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "deletable": false,
+    "editable": false,
+    "nbgrader": {
+     "checksum": "2e394010963ab733827d6c653a828c51",
+     "grade": true,
+     "grade_id": "study-hours-correct",
+     "locked": true,
+     "points": 1,
+     "schema_version": 1,
+     "solution": false
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "142\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(study_hours)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Generate all business days in 2019 that start at the first weekday of the month. Calculate how many of these days fall on the second day of the month. Assign that value to the variable *second_days*."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {
+    "deletable": false,
+    "nbgrader": {
+     "checksum": "9ef729db1f5960ec939011ed0aa0145e",
+     "grade": false,
+     "grade_id": "second-days",
+     "locked": false,
+     "schema_version": 1,
+     "solution": true
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from datetime import datetime\n",
+    "\n",
+    "# YOUR CODE HERE\n",
+    "first_weekday_month = pd.date_range('2019-01-01', '2019-12-31', freq = 'BMS')\n",
+    "second_days = sum(i == 2 for i in first_weekday_month.day)\n",
+    "# YOUR CODE ENDS HERE"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {
+    "deletable": false,
+    "editable": false,
+    "nbgrader": {
+     "checksum": "0f49f849772ca0aeb1a306a12e9c6c9a",
+     "grade": true,
+     "grade_id": "second-days-correct",
+     "locked": true,
+     "points": 1,
+     "schema_version": 1,
+     "solution": false
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "2\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(second_days)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The blood moon was best visible on 21 January 2019 at 05.41 am in Amsterdam. Calculate what the time was in Sydney (Australia) at that exact moment. Assign the answer to *bloodmoon*."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "deletable": false,
+    "nbgrader": {
+     "checksum": "8e3bf541cf5e5d3e7887e9c89156b798",
+     "grade": false,
+     "grade_id": "bloodmoon",
+     "locked": false,
+     "schema_version": 1,
+     "solution": true
+    }
+   },
+   "outputs": [],
+   "source": [
+    "from datetime import datetime\n",
+    "import pytz\n",
+    "\n",
+    "# YOUR CODE HERE\n",
+    "from dateutil.parser import parse\n",
+    "bloodmoon = pd.Timestamp(parse('21 January 2019 at 05:41 am'), tz ='Europe/Amsterdam').tz_convert('Australia/Sydney')\n",
+    "# YOUR CODE ENDS HERE"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {
+    "deletable": false,
+    "editable": false,
+    "nbgrader": {
+     "checksum": "c1f947d711536ef3bc0a4538eea59e57",
+     "grade": true,
+     "grade_id": "bloodmoon-correct",
+     "locked": true,
+     "points": 1,
+     "schema_version": 1,
+     "solution": false
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "2019-01-21 15:41:00+11:00\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(bloodmoon)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Sales volumes\n",
+    "\n",
+    "The file *volume.csv* contains sales volumes of different companies. Read the file, and calculate the mean sales volumes of each company in the year 2010. Assign the series to the variable *volumes2010*. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {
+    "deletable": false,
+    "nbgrader": {
+     "checksum": "74e7b46a16b7c768cf2d074539bcf9fe",
+     "grade": false,
+     "grade_id": "volumes2010",
+     "locked": false,
+     "schema_version": 1,
+     "solution": true
+    }
+   },
+   "outputs": [],
+   "source": [
+    "file = 'volume.csv'\n",
+    "\n",
+    "# YOUR CODE HERE\n",
+    "volume = pd.read_csv(file, index_col=0, header=0, parse_dates=True)\n",
+    "volumes2010 = volume['2010'].mean()\n",
+    "# YOUR CODE ENDS HERE"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {
+    "deletable": false,
+    "editable": false,
+    "nbgrader": {
+     "checksum": "6046a8c483b6550d9ba1a3365c422f16",
+     "grade": true,
+     "grade_id": "volumes2010-correct",
+     "locked": true,
+     "points": 1,
+     "schema_version": 1,
+     "solution": false
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "AA      3.113912e+07\n",
+      "AAPL    2.140376e+07\n",
+      "GE      7.223856e+07\n",
+      "IBM     6.422816e+06\n",
+      "JNJ     1.214678e+07\n",
+      "MSFT    6.306716e+07\n",
+      "PEP     6.962504e+06\n",
+      "SPX     4.566245e+09\n",
+      "XOM     2.643224e+07\n",
+      "dtype: float64\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(volumes2010)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "In which year did the sales volume of Apple (*AAPL*) overtake the sales volume of Microsoft (*MSFT*)? Calculate the value and assign the timestamp to the variable *changeover*."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {
+    "deletable": false,
+    "nbgrader": {
+     "checksum": "d747e44e69c39974fe452219f3364247",
+     "grade": false,
+     "grade_id": "changeover",
+     "locked": false,
+     "schema_version": 1,
+     "solution": true
+    },
+    "scrolled": false
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1990 : -14908756800.0\n",
+      "1991 : -15086789200.0\n",
+      "1992 : -14024811200.0\n",
+      "1993 : -14217358000.0\n",
+      "1994 : -14951071600.0\n",
+      "1995 : -16610394800.0\n",
+      "1996 : -16364521200.0\n",
+      "1997 : -13846300000.0\n",
+      "1998 : -10897611200.0\n",
+      "1999 : -10175485000.0\n",
+      "2000 : -15797261200.0\n",
+      "2001 : -15538016600.0\n",
+      "2002 : -16629229400.0\n",
+      "2003 : -13854872700.0\n",
+      "2004 : -12481961100.0\n",
+      "2005 : -10272029700.0\n",
+      "2006 : -9128982100.0\n",
+      "2007 : -6838687000.0\n",
+      "2008 : -11081583600.0\n",
+      "2009 : -10616266300.0\n",
+      "2010 : -10499176600.0\n",
+      "2011 : -8946034800.0\n"
+     ]
+    }
+   ],
+   "source": [
+    "file = 'volume.csv'\n",
+    "\n",
+    "# YOUR CODE HERE\n",
+    "volume = pd.read_csv(file, index_col=0, header=0, parse_dates=True)\n",
+    "for i in range(1990, 2012):\n",
+    "    print(i, ':', volume[str(i)]['AAPL'].sum() - volume[str(i)]['MSFT'].sum())\n",
+    "# Apparently, the annual sales volume of Apple never overtook Microsoft.\n",
+    "\n",
+    "days_apple_overtook_microsoft = []\n",
+    "for i in volume.index:\n",
+    "    if volume.at[i, 'AAPL'] > volume.at[i, 'MSFT']:\n",
+    "        days_apple_overtook_microsoft.append(i)\n",
+    "\n",
+    "changeover = days_apple_overtook_microsoft[0] # first time Apple's sales volume overook Microsoft's\n",
+    "# YOUR CODE ENDS HERE"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {
+    "deletable": false,
+    "editable": false,
+    "nbgrader": {
+     "checksum": "4b91c6e097d68ee5a1b12127fa81b034",
+     "grade": true,
+     "grade_id": "changeover-correct",
+     "locked": true,
+     "points": 1,
+     "schema_version": 1,
+     "solution": false
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1992-08-06 00:00:00\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(changeover)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Format the date that you have found in a nicer way corresponding to the style dd/mm/yy. Thus, the day (dd), month (mm), and the year (yy) are formatted in 2 digits, separated by slashes. Assign the value to the variable *nicedate*."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {
+    "deletable": false,
+    "nbgrader": {
+     "checksum": "6591ac685a74b0e965949d2ac5895758",
+     "grade": false,
+     "grade_id": "nicedate",
+     "locked": false,
+     "schema_version": 1,
+     "solution": true
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# YOUR CODE HERE\n",
+    "nicedate = changeover.strftime('%d/%m/%y')\n",
+    "# YOUR CODE ENDS HERE"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {
+    "deletable": false,
+    "editable": false,
+    "nbgrader": {
+     "checksum": "9319d4c70f404ca91d2f25003bcc726c",
+     "grade": true,
+     "grade_id": "nicedate-correct",
+     "locked": true,
+     "points": 1,
+     "schema_version": 1,
+     "solution": false
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "06/08/92\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(nicedate)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Apple has to report every end of the year (31 December) what its current sales volume is (not cumulative!). Create a time series for every year with the sales volume listed for Apple (AAPL) on 31 December. If the data does not contain a record for this date, then take the last known value that this known prior to that date. Assign the time series to the variable *apple_report*."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {
+    "deletable": false,
+    "nbgrader": {
+     "checksum": "2245c815d9ebe931674d554731508b2f",
+     "grade": false,
+     "grade_id": "apple-report",
+     "locked": false,
+     "schema_version": 1,
+     "solution": true
+    }
+   },
+   "outputs": [],
+   "source": [
+    "# YOUR CODE HERE\n",
+    "apple_report = volume['AAPL'].asfreq('Y', how='end', method='ffill')\n",
+    "# YOUR CODE ENDS HERE"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {
+    "deletable": false,
+    "editable": false,
+    "nbgrader": {
+     "checksum": "e1820b4a996de582a54bd43172b4d08b",
+     "grade": true,
+     "grade_id": "apple-report-correct",
+     "locked": true,
+     "points": 1,
+     "schema_version": 1,
+     "solution": false
+    }
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1990-12-31     1593200.0\n",
+      "1991-12-31     4802000.0\n",
+      "1992-12-31     3302000.0\n",
+      "1993-12-31     5765200.0\n",
+      "1994-12-31     2616400.0\n",
+      "1995-12-31    10874400.0\n",
+      "1996-12-31    13719200.0\n",
+      "1997-12-31    14531200.0\n",
+      "1998-12-31     9716400.0\n",
+      "1999-12-31     5856400.0\n",
+      "                 ...    \n",
+      "2001-12-31     4920800.0\n",
+      "2002-12-31     7168800.0\n",
+      "2003-12-31     6230400.0\n",
+      "2004-12-31     9949600.0\n",
+      "2005-12-31    22295100.0\n",
+      "2006-12-31    38443900.0\n",
+      "2007-12-31    19261900.0\n",
+      "2008-12-31    21697900.0\n",
+      "2009-12-31    12586100.0\n",
+      "2010-12-31     6911000.0\n",
+      "Freq: A-DEC, Name: AAPL, Length: 21, dtype: float64\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(apple_report)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The volumes of Apple are highly fluctuating over time. You can clearly see that when you make a plot. It would be better to smooth out the sales volume by taking a moving average with a period of 200 days. Calculate the moving average of the sales volume and assign to the variable *apple_smooth*. Create a plot with the original time series and the smooth version of the time series."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {
+    "deletable": false,
+    "nbgrader": {
+     "checksum": "96caa2815343895894055cb91b9e191d",
+     "grade": false,
+     "grade_id": "apple-smooth",
+     "locked": false,
+     "schema_version": 1,
+     "solution": true
+    }
+   },
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# YOUR CODE HERE\n",
+    "apple_smooth = volume['AAPL'].rolling('200D').mean()\n",
+    "volume['AAPL'].plot()\n",
+    "apple_smooth.plot(title=\"Apple time series\");\n",
+    "# YOUR CODE ENDS HERE"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "deletable": false,
+    "editable": false,
+    "nbgrader": {
+     "checksum": "e85f6595c0b5d34bc9ee753ddb420e9f",
+     "grade": true,
+     "grade_id": "apple-smooth-correct",
+     "locked": true,
+     "points": 1,
+     "schema_version": 1,
+     "solution": false
+    }
+   },
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.3"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
