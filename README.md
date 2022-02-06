@@ -2,6 +2,14 @@
 
 A repository containing some projects from my Bachelor degree.
 
+### Information Retrieval (2019-2020: X_400435)
+- Assignment 1: Inspecting the Dataset (100%)
+- Assignment 2: Building a Simple Index (100%)
+- Assignment 3: Improving the Index (100%)
+- Assignment 4: Evaluating Search Engines (100%)
+- Assignment 5: Link Analysis (100%)
+- Assignment 6: Clustering and Topic Modeling (100%)
+
 ### Data Wrangling (2019-2020: XB_0014)
 - Assignment 1 (100%)
 - Assignment 2 (100%)
