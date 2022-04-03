@@ -2,6 +2,11 @@
 
 A repository containing some projects from my Bachelor degree.
 
+### Business Simulation (2018-2019: X_401006)
+- Assignment 1: Random Number Generation (100%)
+- Assignment 2: Discrete Event Simulation (96%)
+- Final Assignment: Modelling Epidemics (76%)
+
 ### Information Retrieval (2019-2020: X_400435)
 - Assignment 1: Inspecting the Dataset (100%)
 - Assignment 2: Building a Simple Index (100%)
