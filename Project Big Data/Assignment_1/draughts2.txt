@@ -1,0 +1,14 @@
+(9,9)	wthis piece will be taken
+(2,2)	w
+
+here are some invalid lines:
+(11,11) invalid_please_dont_crash
+(-1,1) invalid_please_dont_crash
+(1,invalid_please_dont_crash
+  (3,1)	w	this is also invalid
+(3,5) b	invalid!
+
+don't forget to read the next lines:
+(3,3)	b
+(8,8)	b
+(7,7)	B
