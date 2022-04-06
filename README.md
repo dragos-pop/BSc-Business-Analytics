@@ -2,6 +2,8 @@
 
 A repository containing some projects from my Bachelor degree.
 
+## <ins>Third Year</ins>
+
 ### Dynamics and Computation (2019-2020: X_400647)
 - Assignment 1: Learning matlab, the logistic map (98,5%)
 - Assignment 2: Nonlinear equations: the secant method (94%)
@@ -21,6 +23,11 @@ A repository containing some projects from my Bachelor degree.
 - Assignment 4: Evaluating Search Engines (100%)
 - Assignment 5: Link Analysis (100%)
 - Assignment 6: Clustering and Topic Modeling (100%)
+
+### Introduction to Data Science (2019-2020: XB_0018)
+- Data Science 101 (PASS)
+
+## <ins>Second Year</ins>
 
 ### Project Big Data (2018-2019: X_400645)
 - Assignment 1: Command line tools, Python exercises (85%)
